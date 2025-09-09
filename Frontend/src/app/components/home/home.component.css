@@ -1,0 +1,5 @@
+.product-card {
+    width: 23%; /* Adjust the percentage for 4 cards in a row with some gap */
+    box-sizing: border-box;
+  }
+  

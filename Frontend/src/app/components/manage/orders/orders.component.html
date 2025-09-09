@@ -1,0 +1,179 @@
+<!-- <div class="w-3/4 bg-white px-10 py-10"> 
+    <div class="flex justify-between border-b pb-8">
+        <button mat-raised-button color="warn" class="mr-2" (click)="goBack()">
+            Back
+          </button>
+        <h1 class="font-semibold text-2xl">Shopping Cart</h1>
+
+    </div>
+    <div class="flex mt-10 mb-5">
+        <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Quantity</h3>
+        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Price</h3>
+        <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Total</h3>
+    </div>
+
+    @for (order of orders; track $index) {
+        <div class="flex justify-between">
+        <div class="w-6/12">
+        <h6>Order Id: {{order._id}}</h6>
+        <span>Date:</span>
+        <span>{{order.date | date: 'mediumDate'}}</span>
+        <h6>Customer Address</h6>
+        <p>{{order.address.address1}}</p>
+        <p>{{order.address.address2}}</p>
+        <p>{{order.address.city}}</p>
+        <p>{{order.address.pincode}}</p>
+        
+
+        <div class="w-6/12">
+            <mat-button-toggle-group [value]="order.status" name="status" aria-label="Font Style" (change)="statusChanged($event,order)">
+              <mat-button-toggle value="Dispatched">Dispatched</mat-button-toggle>
+              <mat-button-toggle value="Shipped">Shipped</mat-button-toggle>
+              <mat-button-toggle value="Delievered">Delievered</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+</div>
+        <div class="mb-10 shadow-lg">
+        @for (item of order.items; track $index) {
+    <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+        <div class="flex w-2/5">
+           
+            <div class="w-20">
+                <img class="h-24" [src]="item.product.images[0]" alt="Product Image">
+            </div>
+            <div class="flex flex-col justify-between ml-4 flex-grow">
+                <span class="font-bold text-sm">{{item.product.name}}</span>
+
+            
+            </div>
+        </div>
+        <div class="flex justify-center w-1/5 items-center">
+           
+           <span class="text-center w-1/5 font-semibold text-sm">{{item.quantity}}</span>
+        </div> -->
+        <!--  This line is not in use <span class="text-center w-1/5 font-semibold text-sm">₹{{item.product.price}}</span> -->
+
+        <!-- <div style="padding-left: 60px;">
+            <p style="
+        font-size: 18px;
+        font-weight: bold;
+        color: #e74c3c;
+        margin: 0;
+      ">
+                <s> {{ item.product.price }}₹</s>
+            </p>
+            <p class="text-lg font-semibold text-gray-700 mb-2"> {{item.product.discount}}% OFF</p>
+            <p class="text-lg font-semibold text-gray-700 mb-2"> ₹{{sellingPrice(item.product)}}</p>
+
+
+            </div>
+        <span class="text-center w-1/5 font-semibold text-sm" style="padding-left: 60px;"> ₹{{sellingPrice(item.product)*item.quantity}}</span>
+
+
+    </div> 
+            }
+            </div>
+        }
+
+            
+            <a href="#" class="flex font-semibold text-indigo-600 text-sm mt-10">
+                <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512">
+                    <path
+                        d="M134.059 296H448V216H134.059zM192 376H448V296H192zm96-80h160V376H288zM106.059 416H96V152c0-13.255 10.745-24 24-24h184v88h88v176h-96v32h-8.059v48h-72v-48h-24.059V328h-16v-40H90.059l-2-96H12V128H0V80h37.059L41.8 50.3C43.9 37.02 55.3 28 69.059 28h48v88h8v176H12v24H96v160H96.059v-40h8v-48h-48zM216 88h120v32H216z">
+                    </path>
+                </svg>
+                Continue Shopping
+            </a>
+     
+        </div> -->
+
+
+
+
+
+
+
+
+
+        <div class="shopping-cart-container">
+    <div class="cart-header">
+        <button mat-raised-button color="warn" class="back-button" (click)="goBack()">
+            Back
+        </button>
+        <h1 class="cart-title">Shopping Cart</h1>
+    </div>
+    
+    <div class="table-header">
+        <h3 class="header-product">Product Details</h3>
+        <h3 class="header-quantity">Quantity</h3>
+        <h3 class="header-price">Price</h3>
+        <h3 class="header-total">Total</h3>
+    </div>
+
+    @for (order of orders; track $index) {
+        <div class="order-container">
+            <div class="order-info">
+                <div class="order-details">
+                    <h6 class="order-id">Order Id: {{order._id}}</h6>
+                    <div class="order-date">
+                        <span class="date-label">Date:</span>
+                        <span class="date-value">{{order.date | date: 'mediumDate'}}</span>
+                    </div>
+                    <h6 class="address-title">Customer Address</h6>
+                    <div class="address-block">
+                        <p>{{order.address.address1}}</p>
+                        <p>{{order.address.address2}}</p>
+                        <p>{{order.address.city}}</p>
+                        <p>{{order.address.pincode}}</p>
+                    </div>
+                </div>
+
+                <div class="status-controls">
+                    <mat-button-toggle-group [value]="order.status" name="status" aria-label="Font Style" (change)="statusChanged($event,order)" class="status-toggle">
+                        <mat-button-toggle value="Dispatched">Dispatched</mat-button-toggle>
+                        <mat-button-toggle value="Shipped">Shipped</mat-button-toggle>
+                        <mat-button-toggle value="Delievered">Delivered</mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+            </div>
+
+            <div class="items-container">
+                @for (item of order.items; track $index) {
+                    <div class="item-row">
+                        <div class="product-info">
+                            <div class="product-image">
+                                <img [src]="item.product.images[0]" alt="Product Image">
+                            </div>
+                            <div class="product-details">
+                                <span class="product-name">{{item.product.name}}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-section">
+                            <span class="quantity-value">{{item.quantity}}</span>
+                        </div>
+                        
+                        <div class="price-section">
+                            <p class="original-price">
+                                <s>{{item.product.price}}₹</s>
+                            </p>
+                            <p class="discount-text">{{item.product.discount}}% OFF</p>
+                            <p class="selling-price">₹{{sellingPrice(item.product)}}</p>
+                        </div>
+                        
+                        <span class="total-price">₹{{sellingPrice(item.product)*item.quantity}}</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <a href="#" class="continue-shopping">
+        <svg class="shopping-icon" viewBox="0 0 448 512">
+            <path d="M134.059 296H448V216H134.059zM192 376H448V296H192zm96-80h160V376H288zM106.059 416H96V152c0-13.255 10.745-24 24-24h184v88h88v176h-96v32h-8.059v48h-72v-48h-24.059V328h-16v-40H90.059l-2-96H12V128H0V80h37.059L41.8 50.3C43.9 37.02 55.3 28 69.059 28h48v88h8v176H12v24H96v160H96.059v-40h8v-48h-48zM216 88h120v32H216z"></path>
+        </svg>
+        Continue Shopping
+    </a>
+</div>

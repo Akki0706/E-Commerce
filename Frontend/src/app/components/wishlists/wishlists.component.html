@@ -1,0 +1,12 @@
+<div class="wishlist-container">
+  <h2 class="wishlist-heading">Wishlist</h2>
+  <div class="wishlist-items">
+    @for (product of wishlistService.wishlists; track $index) {
+      <div class="wishlist-item">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+    } @empty {
+      <h3 class="empty-message">No Items in WishList</h3>
+    }
+  </div>
+</div>

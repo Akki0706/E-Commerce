@@ -1,0 +1,11 @@
+<div class="app-container">
+  <app-header *ngIf="showLayout"></app-header>
+
+  <div class="main-content">
+    <app-loader [isLoading]="isLoading | async"></app-loader>
+
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer *ngIf="showLayout"></app-footer>
+</div>

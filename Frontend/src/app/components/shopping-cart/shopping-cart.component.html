@@ -1,0 +1,213 @@
+
+
+    <!-- Shopping Cart Section -->
+    <div class="container mx-auto mt-10">
+        @if( orderStep==0){
+        <div class="flex shadow-md my-10">
+            <!-- Cart Items -->
+            <div class="w-3/4 bg-white px-10 py-10">
+                <div class="flex justify-between border-b pb-8">
+                    <h1 class="font-semibold text-2xl">Shopping Cart</h1>
+        
+                </div>
+                <div class="flex mt-10 mb-5">
+                    <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+                    <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Quantity</h3>
+                    <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Price</h3>
+                    <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Total</h3>
+                </div>
+
+                <!-- Cart Item -->
+                @for (item of cartItems; track $index) {
+                <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+                    <div class="flex w-2/5">
+                        <!-- Product Image -->
+                        <div class="w-20">
+                            <img class="h-24" [src]="item.product.images[0]" alt="Product Image">
+                        </div>
+                        <div class="flex flex-col justify-between ml-4 flex-grow">
+                            <span class="font-bold text-sm">{{item.product.name}}</span>
+
+                        
+                        </div>
+                    </div>
+                    <div class="flex justify-center w-1/5 items-center">
+                        <span 
+                        (click)="item.quantity > 0 && addToCart(item.product._id!, -1)" 
+                        class="text-lg bg-gray-400 rounded-sm px-3 py-2 shadow cursor-pointer">-
+                      </span>
+                                              <span class="text-center w-1/5 font-semibold text-sm">{{item.quantity}}</span>
+                        <span (click)="addToCart(item.product._id!,1)" class="text-lg bg-gray-400 rounded-sm px-3 py-2 shadow  cursor-pointer">+</span>
+                    </div>
+                    <!-- <span class="text-center w-1/5 font-semibold text-sm">₹{{item.product.price}}</span> -->
+
+                    <div style="padding-left: 60px;">
+                        <p style="
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #e74c3c;
+                    margin: 0;
+                  ">
+                            <s> {{ item.product.price }}₹</s>
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 mb-2"> {{item.product.discount}}% OFF</p>
+                        <p class="text-lg font-semibold text-gray-700 mb-2"> ₹{{sellingPrice(item.product)}}</p>
+
+
+                        </div>
+                    <span class="text-center w-1/5 font-semibold text-sm" style="padding-left: 60px;"> ₹{{sellingPrice(item.product)*item.quantity}}</span>
+
+
+                </div> 
+                        }
+
+                        
+                        <a href="#" class="flex font-semibold text-indigo-600 text-sm mt-10">
+                            <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512">
+                                <path
+                                    d="M134.059 296H448V216H134.059zM192 376H448V296H192zm96-80h160V376H288zM106.059 416H96V152c0-13.255 10.745-24 24-24h184v88h88v176h-96v32h-8.059v48h-72v-48h-24.059V328h-16v-40H90.059l-2-96H12V128H0V80h37.059L41.8 50.3C43.9 37.02 55.3 28 69.059 28h48v88h8v176H12v24H96v160H96.059v-40h8v-48h-48zM216 88h120v32H216z">
+                                </path>
+                            </svg>
+                            Continue Shopping
+                        </a>
+                    </div>
+
+                    <!-- Summary Section -->
+                    <div id="summary" class="w-1/4 px-8 py-10 bg-gray-200">
+                        <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+                      
+                        <div class="border-t mt-8">
+                            <div class="flex justify-between py-6 text-sm font-semibold uppercase">
+                                <span>Total cost</span>
+                                <span>₹{{totalAmount}}</span>
+                            </div>
+                            <button (click)="checkout()"
+                                class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                        </div>
+                    </div>
+
+                </div>
+        }@else if(orderStep==1){
+  <div class="address-wrapper">
+    <div class="address-card">
+      <div class="header-section">
+        <div class="icon-wrapper">
+          <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
+        <h1 class="address-title">Delivery Address</h1>
+        <p class="address-subtitle">Please provide your address details to proceed with the order</p>
+      </div>
+
+      <form [formGroup]="addressForm" class="address-form">
+        <!-- Address 1 -->
+        <div class="input-group">
+          <label for="address1" class="form-label">Street Address</label>
+          <input id="address1" formControlName="address1" type="text" class="form-input" placeholder="Enter your street address">
+          <div class="input-underline"></div>
+        </div>
+    
+        <!-- Address 2 -->
+        <div class="input-group">
+          <label for="address2" class="form-label">Apartment, Suite, etc. (Optional)</label>
+          <input id="address2" formControlName="address2" type="text" class="form-input" placeholder="Apartment, suite, floor, etc.">
+          <div class="input-underline"></div>
+        </div>
+    
+        <!-- City -->
+        <div class="input-group">
+          <label for="city" class="form-label">City</label>
+          <input id="city" formControlName="city" type="text" class="form-input" placeholder="Enter your city">
+          <div class="input-underline"></div>
+        </div>
+    
+        <!-- Pincode -->
+        <div class="input-group">
+          <label for="pincode" class="form-label">PIN Code</label>
+          <input id="pincode" formControlName="pincode" type="text" class="form-input" placeholder="Enter 6-digit PIN code">
+          <div class="input-underline"></div>
+        </div>
+    
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" (click)="addAddress()" [disabled]="addressForm.invalid">
+          <span class="btn-text">Continue to Payment</span>
+          <svg class="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+}@else if(orderStep==2) {
+  <div class="payment-wrapper">
+    <div class="payment-card">
+      <div class="header-section">
+        <div class="icon-wrapper">
+          <svg class="payment-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+          </svg>
+        </div>
+        <h1 class="payment-title">Payment Method</h1>
+        <p class="payment-subtitle">Choose your preferred payment option to complete the order</p>
+      </div>
+
+      <div class="payment-form">
+        <!-- Custom Radio Group -->
+        <div class="payment-options">
+          <div class="radio-group">
+            
+            <!-- Cash Option -->
+            <div class="payment-option" [class.selected]="paymentType === 'cash'" (click)="paymentType = 'cash'">
+              <input type="radio" id="cash" name="payment" value="cash" [(ngModel)]="paymentType" class="radio-input">
+              <div class="option-content">
+                <div class="option-icon cash-icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                </div>
+                <div class="option-details">
+                  <h3 class="option-title">Cash on Delivery</h3>
+                  <p class="option-description">Pay when your order arrives at your doorstep</p>
+                </div>
+              </div>
+              <div class="radio-indicator">
+                <div class="radio-dot"></div>
+              </div>
+            </div>
+
+            <!-- Card Option -->
+            <div class="payment-option" [class.selected]="paymentType === 'card'" (click)="paymentType = 'card'">
+              <input type="radio" id="card" name="payment" value="card" [(ngModel)]="paymentType" class="radio-input">
+              <div class="option-content">
+                <div class="option-icon card-icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                  </svg>
+                </div>
+                <div class="option-details">
+                  <h3 class="option-title">Credit/Debit Card</h3>
+                  <p class="option-description">Secure online payment with your card</p>
+                </div>
+              </div>
+              <div class="radio-indicator">
+                <div class="radio-dot"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="complete-order-btn" (click)="completeOrder()" [disabled]="!paymentType">
+          <span class="btn-text">Complete Order</span>
+          <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+}
+            </div>

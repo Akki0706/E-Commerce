@@ -1,0 +1,91 @@
+@if(product){
+<div class="container mx-auto p-8">
+  <!-- Product Page -->
+  <div class="flex flex-col lg:flex-row gap-8">
+
+    <!-- Product Image Gallery -->
+    <div class="lg:w-6/12">
+      <div class="flex flex-col gap-4">
+        <img [src]="mainImage" alt="Product Image" class="w-full h-80 object-cover rounded-lg shadow">
+        <div class="flex gap-4">
+          @for (url of product.images; track $index) {
+          <img [src]="url" class="w-1/5 h-20 object-cover rounded-lg shadow cursor-pointer" (click)="changeImage(url)">
+          }
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="lg:w-6/12">
+      <h1 class="text-4xl font-bold mb-4">{{product.name}}</h1>
+      <div>
+        <p class="text-lg font-semibold text-gray-700 mb-2">Price: <s> ₹{{product.price}}</s></p>
+        <p class="text-lg font-semibold text-gray-700 mb-2"> Discount: {{product.discount}}% OFF</p>
+        <p class="text-lg font-semibold text-gray-700 mb-2"> After Discount Price: ₹{{sellingPrice}}</p>
+
+      </div>
+      <p class="text-gray-500 mb-6">{{product.shotDescription}}</p>
+
+      <div class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">{{product.description}}</h2>
+
+      </div>
+      <div style="display: flex; gap: 30px;">
+        <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600"
+          (click)="addToWishList(product)"> @if(isInWishList(product)){
+            Remove From WishList <mat-icon><em class="material-icons">favorite_border</em></mat-icon>
+          }
+          @else {
+         
+          Move to WishList <mat-icon>favourite</mat-icon>
+          }
+        </button>
+
+@if(isProductInCart(product._id!)){
+ 
+
+  <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600" (click)="addToCart(product)">Remove from Cart
+         
+    <mat-icon> remove_shopping_cart</mat-icon>
+  </button>
+
+}@else {
+
+  <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600" (click)="addToCart(product)">Add to Cart
+
+    <mat-icon> add_shopping_cart </mat-icon> 
+  </button>
+      }
+
+      </div>
+    </div>
+  </div>
+
+  @if(similarProducts.length){
+  <div class="mt-4">
+    <h4 class="text-2xl font-bold">Similar Products</h4>
+    <div class="flex flex-wrap gap-4 justify-between">
+      @for (product of similarProducts; track $index) {
+      <div class="product-card">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+
+  <div class="mt-12">
+    <app-product-reviews *ngIf="product?.['_id']" [productId]="product._id!"></app-product-reviews>
+  </div>
+  
+</div>
+}@else {
+<h1>
+  Loading.....
+</h1>
+}
+
+
+

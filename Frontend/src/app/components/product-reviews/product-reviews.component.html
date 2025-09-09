@@ -1,0 +1,71 @@
+<div class="mt-12">
+  <h2 class="text-3xl font-bold mb-6">Product Reviews</h2>
+
+  <div *ngIf="reviews.length > 0" class="space-y-6">
+    <div
+      *ngFor="let review of reviews"
+      class="border p-6 rounded-lg shadow-sm bg-white"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold">{{ review.reviewer }}</h3>
+        <div class="text-yellow-400">
+          <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+            <i [class]="i < review.rating ? 'fas fa-star' : 'far fa-star'"></i>
+          </ng-container>
+        </div>
+      </div>
+      <p class="text-gray-600">{{ review.comment }}</p>
+      <p class="text-sm text-gray-400">
+        {{ review.createdAt | date : "medium" }}
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <h3 class="text-2xl font-semibold mb-4">Write a Review</h3>
+    <form
+      [formGroup]="reviewForm"
+      (ngSubmit)="submitReview()"
+      class="space-y-4"
+    >
+      <div>
+        <input
+          formControlName="reviewer"
+          type="text"
+          placeholder="Your name"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div>
+        <select
+          formControlName="rating"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        >
+          <option *ngFor="let star of [1, 2, 3, 4, 5]" [value]="star">
+            {{ star }} Star(s)
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <textarea
+          formControlName="comment"
+          placeholder="Your review"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        ></textarea>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

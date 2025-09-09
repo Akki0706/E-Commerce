@@ -1,0 +1,166 @@
+<!-- <header>
+    <div class="top-header">
+      <div class="logo cursor-pointer" routerLink="">
+        <img src="https://i.pinimg.com/736x/ce/56/99/ce5699233cbc0f142250b520d967dff7.jpg" class="logoimage" alt="E-Commerce Logo">
+        
+          <h1 class="brand-title">Desi<span class="highlight">Dealz</span></h1>
+      </div>
+      <div class="search-bar" *ngIf="shouldShowSearchBar()">
+        <input type="text" placeholder="Search products..." (keyup.enter)="onSearch($event)" [(ngModel)]="searchTerm">
+        <button (click)="Search()">Search</button>
+      </div>
+      <div class="profile">
+        @if(authService.isAdmin){
+        <a routerLink="/admin">{{authService.userName}}</a>
+        }@else {
+          <a routerLink="/profile">{{authService.userName}}</a>
+        }
+        @if(authService.isLoggedIn){
+        <a (click)="logout()" class="cursor-pointer ml-2">LogOut</a>
+        }@else {
+          
+          <a routerLink="/login" class="cursor-pointer ml-2">LogIn</a>
+          <a routerLink="/register" class="cursor-pointer ml-2">Register</a>
+
+        }
+      </div>
+    </div>
+    @if(authService.isLoggedIn){
+
+      <div style="display: flex; flex-direction: row-reverse; gap: 10px;">
+        @if(!authService.isAdmin){
+      <a routerLink="/wishlists" style="display: flex; flex-direction: row-reverse;"> <mat-icon>favorite</mat-icon></a>
+      <a routerLink="/cart" style="display: flex; flex-direction: row-reverse;"> <mat-icon>shopping_cart</mat-icon></a>
+      <a routerLink="/orders" style="display: flex; flex-direction: row-reverse;"> Orders</a>
+        }
+    </div>
+    <nav class="category-menu">
+      <ul>
+        @for (category of categoryList; track $index) {
+            <li (click)="searchCategory(category._id!)" class="cursor-pointer"><a >{{category.name}}</a></li>
+        
+      }
+      </ul>
+    </nav>
+  }
+  </header>
+   -->
+
+
+
+   <header>
+  <div class="top-header">
+    <div class="logo cursor-pointer" routerLink="">
+      <img src="https://i.pinimg.com/736x/ce/56/99/ce5699233cbc0f142250b520d967dff7.jpg" class="logoimage" alt="E-Commerce Logo">
+      <h1 class="brand-title">Desi<span class="highlight">Dealz</span></h1>
+    </div>
+    
+    <div class="search-bar" *ngIf="shouldShowSearchBar()">
+      <input type="text" placeholder="Search products..." (keyup.enter)="onSearch($event)" [(ngModel)]="searchTerm">
+      <button (click)="Search()">Search</button>
+    </div>
+
+  <button
+      class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md 
+             hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 
+             focus:ring-offset-2 transition duration-300"
+      (click)="openEditProtocolDialog()">
+      Edit Protocols
+    </button>
+    
+    <!-- Premium Dropdown Profile Menu -->
+    <div class="navbar-profile">
+      @if(authService.isLoggedIn) {
+        <div class="profile-dropdown" [class.active]="isDropdownOpen">
+          <!-- Username Display with Avatar -->
+          <div class="profile-trigger" (click)="toggleDropdown()" (keydown.enter)="toggleDropdown()" 
+               tabindex="0" role="button" aria-haspopup="true" [attr.aria-expanded]="isDropdownOpen">
+            <div class="avatar">
+              <span>{{getUserInitials()}}</span>
+            </div>
+            <span class="username">{{authService.userName}}</span>
+            <mat-icon class="dropdown-arrow" [class.rotated]="isDropdownOpen">keyboard_arrow_down</mat-icon>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" [class.show]="isDropdownOpen">
+            <div class="dropdown-header">
+              <div class="user-info">
+                <div class="avatar-large">
+                  <span>{{getUserInitials()}}</span>
+                </div>
+                <div class="user-details">
+                  <span class="display-name">{{authService.userName}}</span>
+                  <span class="user-role">{{authService.isAdmin ? 'Administrator' : 'Customer'}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Admin Section -->
+            @if(authService.isAdmin) {
+              <a routerLink="/admin" class="dropdown-item" (click)="closeDropdown()">
+                <mat-icon>admin_panel_settings</mat-icon>
+                <span>Admin Dashboard</span>
+              </a>
+            } @else {
+              <!-- Customer Section -->
+              <a routerLink="/profile" class="dropdown-item" (click)="closeDropdown()">
+                <mat-icon>person</mat-icon>
+                <span>My Profile</span>
+              </a>
+              
+              <a routerLink="/orders" class="dropdown-item" (click)="closeDropdown()">
+                <mat-icon>receipt_long</mat-icon>
+                <span>My Orders</span>
+              </a>
+              
+              <a routerLink="/wishlists" class="dropdown-item" (click)="closeDropdown()">
+                <mat-icon>favorite</mat-icon>
+                <span>Wishlist</span>
+              </a>
+              
+              <a routerLink="/cart" class="dropdown-item" (click)="closeDropdown()">
+                <mat-icon>shopping_cart</mat-icon>
+                <span>Shopping Cart</span>
+              </a>
+            }
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Logout -->
+            <button class="dropdown-item logout-item" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      } @else {
+        <!-- Login/Register Buttons for non-logged-in users -->
+        <div class="auth-buttons">
+          <a routerLink="/login" class="btn btn-outline">Log In</a>
+          <a routerLink="/register" class="btn btn-primary">Register</a>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Category Navigation (only shown when logged in) -->
+  @if(authService.isLoggedIn) {
+    <nav class="category-menu">
+      <ul>
+        @for (category of categoryList; track $index) {
+          <li (click)="searchCategory(category._id!)" class="cursor-pointer">
+            <a>{{category.name}}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+  }
+
+  <!-- Backdrop to close dropdown when clicking outside -->
+  @if(isDropdownOpen) {
+    <div class="dropdown-backdrop" (click)="closeDropdown()"></div>
+  }
+</header>

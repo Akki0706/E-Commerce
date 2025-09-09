@@ -1,0 +1,61 @@
+<div *ngIf="product" style="
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Ensure same height for all cards */
+">
+  <img *ngIf="product.images && product.images[0]" [routerLink]="'/product/'+product._id" [src]="product.images[0]" alt="Product Image" style="
+    width: 100%;
+    height: 200px; /* Fix image height for consistency */
+    object-fit: cover; /* Ensures image scales properly */
+    border-radius: 8px 8px 0 0;
+  " />
+  <div style="padding: 16px;">
+    <h2 [routerLink]="'/product/'+product._id" style="
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 0 0 10px;
+    ">
+      {{ product.name }}
+    </h2>
+    <p *ngIf="product.shotDescription" style="font-size: 14px; color: #666; margin-bottom: 16px;">
+      {{ product.shotDescription }}
+    </p>
+   
+    <div *ngIf="product.discount" style="display: flex; flex-direction: row; gap: 20px; align-items: center; justify-content: center;">
+       <p class="text-lg font-semibold text-gray-700 mb-2"> ₹{{sellingPrice}}</p>
+        <p *ngIf="product.discount"  style="
+      font-size: 18px;
+      padding-bottom: 6px;
+      font-weight: bold;
+      color: #e74c3c;
+      margin: 0;
+    ">
+      <s> {{ product.price }}₹</s>
+    </p>
+      <p class="text-lg font-semibold text-gray-700 mb-2"> {{product.discount}}% off</p>
+     
+    </div>
+
+    <div style="display: flex; gap: 30px; align-items: center; justify-content: center;">
+      <!-- Wishlist button -->
+      <button mat-fab (click)="addToWishList(product)">
+        <mat-icon *ngIf="isInWishList(product)">favorite</mat-icon>
+        <mat-icon *ngIf="!isInWishList(product)">favorite_border</mat-icon>
+      </button>
+
+      <!-- Cart button -->
+      <button mat-fab (click)="addToCart(product)">
+        <mat-icon *ngIf="isProductInCart(product._id!)">remove_shopping_cart</mat-icon>
+        <mat-icon *ngIf="!isProductInCart(product._id!)">add_shopping_cart</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

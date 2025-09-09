@@ -1,0 +1,285 @@
+<!-- edit-protocol-dialog.component.html -->
+<div class="edit-protocol-dialog-container">
+  <div class="edit-protocol-dialog">
+    <!-- Dialog Header -->
+    <div class="dialog-header">
+      <h2 class="dialog-title">Edit Protocol</h2>
+      <p class="dialog-subtitle">
+        Make changes to the selected protocol. All updates will be applied
+        immediately once saved.
+      </p>
+    </div>
+
+    <!-- Protocol Information Section -->
+    <div class="protocol-info-section">
+      <h3 class="section-title">Protocol Information</h3>
+      <div class="protocol-description">
+        <label class="description-label">Protocol Description</label>
+        <div [formGroup]="protocolName">
+          <textarea
+            formControlName="protocolDescription"
+            placeholder="Enter protocol description"
+          >
+          </textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'assessment'"
+        (click)="setActiveTab('assessment')"
+      >
+        Assessment Questions
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'interventions'"
+        (click)="setActiveTab('interventions')"
+      >
+        Interventions
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'decision'"
+        (click)="setActiveTab('decision')"
+      >
+        Decision Tree
+      </button>
+    </div>
+
+    <!-- Assessment Questions Content -->
+    <div class="tab-content" *ngIf="activeTab === 'assessment'">
+      <!-- Pain Assessment Section -->
+    <mat-expansion-panel class="assessment-panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Pain Assessment </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <!-- Question 1 -->
+  <div class="panel-content">
+    <div class="question-header">
+      <span class="question-label">Question 1</span>
+      <button class="edit-link">Edit</button>
+    </div>
+    <p class="question-text">
+      Rate your current pain level from 0-10. (1 lowest) to 10 (highest)
+    </p>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <div class="answer-column">
+          <span class="answer-label">Answer Type</span>
+          <span class="answer-value">Numeric Range</span>
+          <span class="range-value">0 - 10</span>
+        </div>
+        <div class="symptom-column">
+          <span class="symptom-label">Symptom</span>
+          <span class="symptom-value">Pain</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2 -->
+  <div class="panel-content">
+    <div class="question-header">
+      <span class="question-label">Question 2</span>
+      <button class="edit-link">Edit</button>
+    </div>
+    <p class="question-text">Where is your pain located?</p>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <div class="answer-column">
+          <span class="answer-label">Answer Type</span>
+          <span class="answer-value">Multi - Choice</span>
+
+          <div class="choice-list">
+            <div
+              class="choice-item"
+              *ngFor="let option of painLocationOptions; let i = index"
+            >
+              <span class="choice-number">{{ i + 1 }}.</span>
+              <span class="choice-text">{{ option }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="symptom-column">
+          <span class="symptom-label">Symptom</span>
+          <span class="symptom-value">Pain</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-expansion-panel>
+
+
+      <!-- Expandable Assessment Sections -->
+      <div class="expandable-sections">
+        <!-- Symptom Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Symptom Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <div class="question-header">
+              <span class="question-label">Question 1</span>
+              <button class="edit-link">Edit</button>
+            </div>
+            <p class="question-text">Are you experiencing nausea or vomiting?</p>
+            <div class="answer-section">
+              <div class="answer-row">
+                <div class="answer-column">
+                  <span class="answer-label">Answer Type</span>
+                  <span class="answer-value">Yes / No</span>
+                </div>
+                <div class="symptom-column">
+                  <span class="symptom-label">Symptom</span>
+                  <span class="symptom-value">Nausea</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Other assessment panels remain the same -->
+        <!-- Respiratory Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Respiratory Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Respiratory assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Infection Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Infection Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Infection assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Nutritional Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Nutritional Assessment (2)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Nutritional assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Psychological Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Psychological Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Psychological assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- General Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>General Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              General assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Medication Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Medication Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Medication assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Neurological Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Neurological Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Neurological assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Social Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Social Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Social assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Overall Assessment -->
+        <mat-expansion-panel class="assessment-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Overall Assessment (1)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="panel-content">
+            <p class="panel-placeholder">
+              Overall assessment questions will be displayed here...
+            </p>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </div>
+
+    <!-- Interventions Content -->
+    <div class="tab-content" *ngIf="activeTab === 'interventions'">
+      <p class="placeholder-text">
+        Interventions content will be displayed here...
+      </p>
+    </div>
+
+    <!-- Decision Tree Content -->
+    <div class="tab-content" *ngIf="activeTab === 'decision'">
+      <p class="placeholder-text">
+        Decision tree content will be displayed here...
+      </p>
+    </div>
+
+    <!-- Dialog Footer -->
+    <div class="dialog-footer">
+      <button class="discard-btn" (click)="onDiscard()">Discard</button>
+      <button class="draft-btn" (click)="onSaveAsDraft()">
+        <mat-icon>save</mat-icon>
+        Save as Draft
+      </button>
+      <button class="create-btn" (click)="onCreateProtocol()">
+        Create Protocol
+      </button>
+    </div>
+  </div>
+</div>
