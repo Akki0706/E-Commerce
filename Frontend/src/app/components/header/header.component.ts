@@ -170,6 +170,8 @@ constructor(private dialog: MatDialog) {}
         this.handleProtocolUpdate(result);
       } else {
         console.log('Dialog was closed without saving');
+        console.log("Here dialog is close without saving the details");
+        
       }
     });
   }
