@@ -383,3 +383,38 @@ table.mat-table {
 .table-container {
   animation: fadeInUp 0.6s ease-out 0.2s both;
 }
+
+
+::ng-deep .mat-mdc-cell{
+  text-align: center !important;
+}
+
+::ng-deep .mat-mdc-table .mat-mdc-header-cell{
+  text-align: center !important;
+}
+
+.ng-table th {
+   text-align: center !important;
+}
+
+
+table[ng-table] th {
+  text-align: center !important;
+  border-top: none;
+}
+
+
+.table thead th {
+  text-align: center !important;/*change that parameter to left/right*/
+}
+
+
+.ng-table th {
+  text-align: center !important;/*just change that parameter to left/right*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,30 +1,30 @@
-<!-- edit-protocol-dialog.component.html -->
-<div class="edit-protocol-dialog-container">
-  <div class="edit-protocol-dialog">
-    <!-- Dialog Header -->
-    <div class="dialog-header">
-      <h2 class="dialog-title">Edit Protocol</h2>
-      <p class="dialog-subtitle">
-        Make changes to the selected protocol. All updates will be applied
-        immediately once saved.
-      </p>
+<div class="dialog_section">
+  <div class="dialog_container">
+    <div class="dialog_header">
+      <div class="header_content">
+        <h2 class="dialog-title">Edit Protocol</h2>
+        <p class="dialog-subtitle">
+          Make changes to the selected protocol. All updates will be applied
+          immediately once saved.
+        </p>
+      </div>
     </div>
-
-    <!-- Protocol Information Section -->
+ 
     <div class="protocol-info-section">
       <h3 class="section-title">Protocol Information</h3>
       <div class="protocol-description">
-        <label class="description-label">Protocol Description</label>
-        <div [formGroup]="protocolName">
-          <textarea
-            formControlName="protocolDescription"
-            placeholder="Enter protocol description"
-          >
-          </textarea>
-        </div>
+        <h3 class="text-input-title">Protocol Description</h3>
+<!--  
+        <app-text-input
+          [FormControl]="protocoldescription"
+          placeholder="Protocol for managing symptoms in patients with advanced center"
+          [multiline]="true"
+          type="alphanumericwithspace"
+        >
+        </app-text-input> -->
       </div>
     </div>
-
+ 
     <!-- Tab Navigation -->
     <div class="tab-navigation">
       <button
@@ -49,227 +49,373 @@
         Decision Tree
       </button>
     </div>
+    <div class="questions">
+      Assessment Questions
+      <div class="question-container">
+        <div class="tab-content" *ngIf="activeTab === 'assessment'">
+          <!-- assessment-panel.component.html -->
+<div class="assessment-container">
+  <!-- Pain Assessment Panel -->
+  <mat-expansion-panel class="assessment-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Pain Assessment</mat-panel-title>
+    </mat-expansion-panel-header>
 
-    <!-- Assessment Questions Content -->
-    <div class="tab-content" *ngIf="activeTab === 'assessment'">
-      <!-- Pain Assessment Section -->
-    <mat-expansion-panel class="assessment-panel">
-  <mat-expansion-panel-header>
-    <mat-panel-title>Pain Assessment </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <!-- Question 1 -->
-  <div class="panel-content">
-    <div class="question-header">
-      <span class="question-label">Question 1</span>
-      <button class="edit-link">Edit</button>
-    </div>
-    <p class="question-text">
-      Rate your current pain level from 0-10. (1 lowest) to 10 (highest)
-    </p>
-
-    <div class="answer-section">
-      <div class="answer-row">
-        <div class="answer-column">
-          <span class="answer-label">Answer Type</span>
-          <span class="answer-value">Numeric Range</span>
-          <span class="range-value">0 - 10</span>
-        </div>
-        <div class="symptom-column">
-          <span class="symptom-label">Symptom</span>
-          <span class="symptom-value">Pain</span>
-        </div>
+    <!-- Question 1 -->
+    <div class="panel-content">
+      <div class="question-header">
+        <span class="question-label">Question 1</span>
+        <button class="edit-link" (click)="toggleEdit('painQuestion1')">
+          {{ editStates.painQuestion1 ? 'Cancel' : 'Edit' }}
+        </button>
       </div>
-    </div>
-  </div>
 
-  <!-- Question 2 -->
-  <div class="panel-content">
-    <div class="question-header">
-      <span class="question-label">Question 2</span>
-      <button class="edit-link">Edit</button>
-    </div>
-    <p class="question-text">Where is your pain located?</p>
-
-    <div class="answer-section">
-      <div class="answer-row">
-        <div class="answer-column">
-          <span class="answer-label">Answer Type</span>
-          <span class="answer-value">Multi - Choice</span>
-
-          <div class="choice-list">
-            <div
-              class="choice-item"
-              *ngFor="let option of painLocationOptions; let i = index"
-            >
-              <span class="choice-number">{{ i + 1 }}.</span>
-              <span class="choice-text">{{ option }}</span>
+      <!-- View Mode -->
+      <div *ngIf="!editStates.painQuestion1">
+        <p class="question-text">{{ painAssessment.question1.text }}</p>
+        <div class="answer-section">
+          <div class="answer-row">
+            <div class="answer-column">
+              <span class="answer-label">Answer Type</span>
+              <span class="answer-value">{{ painAssessment.question1.answerType }}</span>
+              <span class="range-value">{{ painAssessment.question1.range.min }} - {{ painAssessment.question1.range.max }}</span>
+            </div>
+            <div class="symptom-column">
+              <span class="symptom-label">Symptom</span>
+              <span class="symptom-value">{{ painAssessment.question1.symptom }}</span>
             </div>
           </div>
         </div>
-        <div class="symptom-column">
-          <span class="symptom-label">Symptom</span>
-          <span class="symptom-value">Pain</span>
+      </div>
+
+      <!-- Edit Mode -->
+      <div *ngIf="editStates.painQuestion1" class="edit-mode">
+        <textarea class="question-input" [(ngModel)]="painAssessment.question1.text" 
+                  placeholder="Enter question text"></textarea>
+        
+        <div class="answer-section">
+          <div class="answer-row">
+            <div class="answer-column">
+              <span class="answer-label">Answer Type</span>
+              <span class="answer-value">Numeric Range</span>
+              <div class="range-inputs">
+                <input type="number" [(ngModel)]="painAssessment.question1.range.min" class="range-input" min="0">
+                <span class="range-separator">—</span>
+                <input type="number" [(ngModel)]="painAssessment.question1.range.max" class="range-input" min="1">
+              </div>
+            </div>
+            <div class="symptom-column">
+              <span class="symptom-label">Symptom</span>
+              <input type="text" [(ngModel)]="painAssessment.question1.symptom" class="symptom-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-discard" (click)="discardChanges('painQuestion1')">Discard</button>
+          <button class="btn-save" (click)="saveChanges('painQuestion1')">Save Changes</button>
         </div>
       </div>
     </div>
-  </div>
-</mat-expansion-panel>
 
+    <!-- Question 2 -->
+    <div class="panel-content">
+      <div class="question-header">
+        <span class="question-label">Question 2</span>
+        <button class="edit-link" (click)="toggleEdit('painQuestion2')">
+          {{ editStates.painQuestion2 ? 'Cancel' : 'Edit' }}
+        </button>
+      </div>
 
-      <!-- Expandable Assessment Sections -->
-      <div class="expandable-sections">
-        <!-- Symptom Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Symptom Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <div class="question-header">
-              <span class="question-label">Question 1</span>
-              <button class="edit-link">Edit</button>
+      <!-- View Mode -->
+      <div *ngIf="!editStates.painQuestion2">
+        <p class="question-text">{{ painAssessment.question2.text }}</p>
+        <div class="answer-section">
+          <div class="answer-row">
+            <div class="answer-column">
+              <span class="answer-label">Answer Type</span>
+              <span class="answer-value">{{ painAssessment.question2.answerType }}</span>
+              <div class="choice-list">
+                <div class="choice-item" *ngFor="let option of painLocationOptions; let i = index">
+                  <span class="choice-number">{{ i + 1 }}.</span>
+                  <span class="choice-text">{{ option }}</span>
+                </div>
+              </div>
             </div>
-            <p class="question-text">Are you experiencing nausea or vomiting?</p>
-            <div class="answer-section">
-              <div class="answer-row">
-                <div class="answer-column">
-                  <span class="answer-label">Answer Type</span>
-                  <span class="answer-value">Yes / No</span>
+            <div class="symptom-column">
+              <span class="symptom-label">Symptom</span>
+              <span class="symptom-value">{{ painAssessment.question2.symptom }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <div *ngIf="editStates.painQuestion2" class="edit-mode">
+        <textarea class="question-input" [(ngModel)]="painAssessment.question2.text" 
+                  placeholder="Enter question text"></textarea>
+        
+        <div class="answer-section">
+          <div class="answer-row">
+            <div class="answer-column">
+              <span class="answer-label">Answer Type</span>
+              <span class="answer-value">Multi - Choice</span>
+              
+              <div class="choice-edit-list">
+                <div class="choice-edit-item" *ngFor="let option of painLocationOptions; let i = index">
+                  <span class="choice-number">{{ i + 1 }}.</span>
+                  <input type="text" [(ngModel)]="painLocationOptions[i]" class="choice-input">
+                  <button class="remove-choice" (click)="removeChoice(i)" *ngIf="painLocationOptions.length > 1">
+                    <mat-icon>close</mat-icon>
+                  </button>
                 </div>
-                <div class="symptom-column">
-                  <span class="symptom-label">Symptom</span>
-                  <span class="symptom-value">Nausea</span>
+              </div>
+              
+              <button class="add-choice-btn" (click)="addChoice()">
+                <mat-icon>add</mat-icon>
+                Add Choice
+              </button>
+            </div>
+            <div class="symptom-column">
+              <span class="symptom-label">Symptom</span>
+              <input type="text" [(ngModel)]="painAssessment.question2.symptom" class="symptom-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-discard" (click)="discardChanges('painQuestion2')">Discard</button>
+          <button class="btn-save" (click)="saveChanges('painQuestion2')">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Symptom Assessment Panel -->
+  <div class="expandable-sections">
+    <mat-expansion-panel class="assessment-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Symptom Assessment (1)</mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="panel-content">
+        <div class="question-header">
+          <span class="question-label">Question 1</span>
+          <button class="edit-link" (click)="toggleEdit('symptomQuestion1')">
+            {{ editStates.symptomQuestion1 ? 'Cancel' : 'Edit' }}
+          </button>
+        </div>
+
+        <!-- View Mode -->
+        <div *ngIf="!editStates.symptomQuestion1">
+          <p class="question-text">{{ symptomAssessment.question1.text }}</p>
+          <div class="answer-section">
+            <div class="answer-row">
+              <div class="answer-column">
+                <span class="answer-label">Answer Type</span>
+                <span class="answer-value">{{ symptomAssessment.question1.answerType }}</span>
+              </div>
+              <div class="symptom-column">
+                <span class="symptom-label">Symptom</span>
+                <span class="symptom-value">{{ symptomAssessment.question1.symptom }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <div *ngIf="editStates.symptomQuestion1" class="edit-mode">
+          <textarea class="question-input" [(ngModel)]="symptomAssessment.question1.text" 
+                    placeholder="Enter question text"></textarea>
+          
+          <div class="answer-section">
+            <div class="answer-row">
+              <div class="answer-column">
+                <span class="answer-label">Answer Type</span>
+                <span class="answer-value">Yes / No</span>
+                <div class="yes-no-options">
+                  <span class="option-item">Yes</span>
+                  <span class="option-item">No</span>
                 </div>
+              </div>
+              <div class="symptom-column">
+                <span class="symptom-label">Symptom</span>
+                <input type="text" [(ngModel)]="symptomAssessment.question1.symptom" class="symptom-input">
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-discard" (click)="discardChanges('symptomQuestion1')">Discard</button>
+            <button class="btn-save" (click)="saveChanges('symptomQuestion1')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>
+        </div>
+</div>
+        <div class="interventions-container">
+      
+      <!-- Tab Content -->
+      <div class="tab-content" *ngIf="activeTab === 'interventions'">
+        
+        <!-- Urgent Priority Section -->
+        <mat-expansion-panel class="priority-panel" [expanded]="prioritySections.urgent.expanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Urgent Priority</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="panel-content" *ngFor="let intervention of prioritySections.urgent.interventions; let i = index">
+            <div class="intervention-header">
+              <span class="intervention-label">Intervention {{ i + 1 }}</span>
+             <button class="edit-link" (click)="toggle(intervention.id)">
+  {{ edit[intervention.id] ? 'Cancel' : 'Edit' }}
+</button>
+
+            </div>
+
+            <!-- View Mode -->
+            <div *ngIf="!edit[intervention.id]">
+              <div class="intervention-details">
+                <div class="detail-row">
+                  <div class="detail-column">
+                    <span class="detail-label">Intervention name</span>
+                    <span class="detail-value">{{ intervention.name }}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-column">
+                    <span class="detail-label">Description</span>
+                    <span class="detail-value">{{ intervention.description }}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-column">
+                    <span class="detail-label">Instructions</span>
+                    <span class="detail-value">{{ intervention.instructions }}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-column">
+                    <span class="detail-label">Symptom</span>
+                    <span class="detail-value">{{ intervention.symptom }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Mode -->
+            <div *ngIf="edit[intervention.id]" class="edit-mode">
+              <div class="form-section">
+                <div class="form-row">
+                  <div class="form-column">
+                    <span class="form-label">Intervention name</span>
+                    <mat-form-field class="full-width" appearance="outline">
+                      <input matInput [(ngModel)]="intervention.name" placeholder="Enter intervention name">
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-column">
+                    <span class="form-label">Description</span>
+                    <mat-form-field class="full-width" appearance="outline">
+                      <textarea matInput [(ngModel)]="intervention.description" 
+                               placeholder="Enter description" rows="2"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-column">
+                    <span class="form-label">Instructions</span>
+                    <mat-form-field class="full-width" appearance="outline">
+                      <textarea matInput [(ngModel)]="intervention.instructions" 
+                               placeholder="Enter instructions" rows="2"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-column">
+                    <span class="form-label">Symptom</span>
+                    <mat-form-field class="full-width" appearance="outline">
+                      <input matInput [(ngModel)]="intervention.symptom" placeholder="Enter symptom">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <button class="btn-discard" mat-stroked-button >
+                  Discard
+                </button>
+                <button class="btn-save" mat-flat-button >
+                  Save Changes
+                </button>
               </div>
             </div>
           </div>
         </mat-expansion-panel>
 
-        <!-- Other assessment panels remain the same -->
-        <!-- Respiratory Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Respiratory Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Respiratory assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
+        <!-- High Priority Section -->
+        <div class="expandable-sections">
+          <mat-expansion-panel class="priority-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>High Priority</mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content" *ngIf="prioritySections.high.interventions.length === 0">
+              <p class="no-interventions-text">No interventions added for High Priority</p>
+            </div>
+          </mat-expansion-panel>
+        </div>
 
-        <!-- Infection Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Infection Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Infection assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
+        <!-- Medium Priority Section -->
+        <div class="expandable-sections">
+          <mat-expansion-panel class="priority-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Medium Priority</mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content" *ngIf="prioritySections.medium.interventions.length === 0">
+              <p class="no-interventions-text">No interventions added for Medium Priority</p>
+            </div>
+          </mat-expansion-panel>
+        </div>
 
-        <!-- Nutritional Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Nutritional Assessment (2)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Nutritional assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- Psychological Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Psychological Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Psychological assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- General Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>General Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              General assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- Medication Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Medication Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Medication assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- Neurological Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Neurological Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Neurological assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- Social Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Social Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Social assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- Overall Assessment -->
-        <mat-expansion-panel class="assessment-panel">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Overall Assessment (1)</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="panel-content">
-            <p class="panel-placeholder">
-              Overall assessment questions will be displayed here...
-            </p>
-          </div>
-        </mat-expansion-panel>
+         <div class="expandable-sections">
+          <mat-expansion-panel class="priority-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Low Priority</mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content" *ngIf="prioritySections.medium.interventions.length === 0">
+              <p class="no-interventions-text">No interventions added for Medium Priority</p>
+            </div>
+          </mat-expansion-panel>
+        </div>
+        
+        
+        <!-- Placeholder when no interventions -->
+        <div *ngIf="!hasInterventions()" class="placeholder-content">
+          <p class="placeholder-text">
+            Interventions content will be displayed here...
+          </p>
+        </div>
       </div>
     </div>
-
-    <!-- Interventions Content -->
-    <div class="tab-content" *ngIf="activeTab === 'interventions'">
-      <p class="placeholder-text">
-        Interventions content will be displayed here...
-      </p>
-    </div>
-
-    <!-- Decision Tree Content -->
-    <div class="tab-content" *ngIf="activeTab === 'decision'">
-      <p class="placeholder-text">
-        Decision tree content will be displayed here...
-      </p>
-    </div>
-
+ 
+        <!-- Decision Tree Content -->
+        <div class="tab-content" *ngIf="activeTab === 'decision'">
+          <p class="placeholder-text">
+            Decision tree content will be displayed here...
+          </p>
+        </div>
+      </div>
+   
     <!-- Dialog Footer -->
     <div class="dialog-footer">
       <button class="discard-btn" (click)="onDiscard()">Discard</button>

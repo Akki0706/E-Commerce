@@ -9,12 +9,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../../types/category';
 import { Location } from '@angular/common';
-
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu'; 
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [MatFormFieldModule,MatButtonModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,RouterLink],
+  imports: [MatFormFieldModule,MatButtonModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
+    RouterLink,MatIcon,MatMenuModule],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
 })
@@ -64,5 +66,8 @@ this.categoryService.deleteCategoryById(id).subscribe((result)=>{
  goBack() {
   this.location.back();
 }
+
+
+
 }
 
