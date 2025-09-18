@@ -16,7 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
   selector: 'app-categories',
   standalone: true,
   imports: [MatFormFieldModule,MatButtonModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
-    RouterLink,MatIcon,MatMenuModule],
+    RouterLink,MatMenuModule],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
 })
