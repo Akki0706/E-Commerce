@@ -1,50 +1,3 @@
-<!-- <header>
-    <div class="top-header">
-      <div class="logo cursor-pointer" routerLink="">
-        <img src="https://i.pinimg.com/736x/ce/56/99/ce5699233cbc0f142250b520d967dff7.jpg" class="logoimage" alt="E-Commerce Logo">
-        
-          <h1 class="brand-title">Desi<span class="highlight">Dealz</span></h1>
-      </div>
-      <div class="search-bar" *ngIf="shouldShowSearchBar()">
-        <input type="text" placeholder="Search products..." (keyup.enter)="onSearch($event)" [(ngModel)]="searchTerm">
-        <button (click)="Search()">Search</button>
-      </div>
-      <div class="profile">
-        @if(authService.isAdmin){
-        <a routerLink="/admin">{{authService.userName}}</a>
-        }@else {
-          <a routerLink="/profile">{{authService.userName}}</a>
-        }
-        @if(authService.isLoggedIn){
-        <a (click)="logout()" class="cursor-pointer ml-2">LogOut</a>
-        }@else {
-          
-          <a routerLink="/login" class="cursor-pointer ml-2">LogIn</a>
-          <a routerLink="/register" class="cursor-pointer ml-2">Register</a>
-
-        }
-      </div>
-    </div>
-    @if(authService.isLoggedIn){
-
-      <div style="display: flex; flex-direction: row-reverse; gap: 10px;">
-        @if(!authService.isAdmin){
-      <a routerLink="/wishlists" style="display: flex; flex-direction: row-reverse;"> <mat-icon>favorite</mat-icon></a>
-      <a routerLink="/cart" style="display: flex; flex-direction: row-reverse;"> <mat-icon>shopping_cart</mat-icon></a>
-      <a routerLink="/orders" style="display: flex; flex-direction: row-reverse;"> Orders</a>
-        }
-    </div>
-    <nav class="category-menu">
-      <ul>
-        @for (category of categoryList; track $index) {
-            <li (click)="searchCategory(category._id!)" class="cursor-pointer"><a >{{category.name}}</a></li>
-        
-      }
-      </ul>
-    </nav>
-  }
-  </header>
-   -->
 
 
 
@@ -61,7 +14,6 @@
     </div>
 
 
-    
     <!-- Premium Dropdown Profile Menu -->
     <div class="navbar-profile">
       @if(authService.isLoggedIn) {
