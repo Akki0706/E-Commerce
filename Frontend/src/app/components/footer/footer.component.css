@@ -1,0 +1,155 @@
+.footer {
+  background: #f8f8f8;
+  padding: 2rem;
+  border-top: 1px solid #ccc;
+  position: relative;
+
+  .footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    .footer-section {
+      width: 30%;
+      min-width: 200px;
+
+      h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          margin: 5px 0;
+
+          a {
+            color: #007bff;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+/* 💬 Chatbot Floating Button */
+.chatbot-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+  background: #5587d1;
+  color: #fff;
+  font-size: 28px;
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: 0.3s;
+
+  &:hover {
+    background: #5587d1;
+  }
+}
+
+/* 🧠 Chatbot Window */
+.chatbot-window {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  width: 320px;
+  max-height: 500px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1001;
+
+  &.active {
+    display: flex;
+  }
+
+  .chat-header {
+    background: #5587d1;
+    color: #fff;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .close {
+      cursor: pointer;
+      font-size: 11px;
+    }
+  }
+
+  .chat-body {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 14px;
+    background: #f9f9f9;
+
+    .user {
+      text-align: right;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .bot {
+      text-align: left;
+      background: #eee;
+      padding: 8px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  }
+
+  .chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      background: #5587d1;
+      color: #fff;
+      border: none;
+      padding: 0 16px;
+      cursor: pointer;
+      border-radius: 30px;
+      &:hover {
+        background: #5587d1;
+      }
+    }
+  }
+}

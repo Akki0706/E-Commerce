@@ -161,11 +161,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { WishlistService } from '../../services/wishlist.service';
 import { CartService } from '../../services/cart.service';
 import { NgIf } from '@angular/common';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [MatButtonModule, RouterLink, MatIconModule, NgIf],
+  imports: [MatButtonModule, RouterLink, MatIconModule, NgIf,MatTooltipModule],
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css']
 })
@@ -215,7 +215,9 @@ export class ProductCardComponent {
         this.cartService.init();
       });
     } else {
-      this.cartService.removeFromCart(product._id).subscribe(() => {
+      this.cartService.removeFromCart(product._id).subscribe(() =>
+    
+        {
         this.cartService.init();
       });
     }
@@ -224,6 +226,7 @@ export class ProductCardComponent {
   isProductInCart(productId: string): boolean {
     return !!this.cartService.items.find(
       (x) => x?.product?._id === productId
+   
     );
   }
 }

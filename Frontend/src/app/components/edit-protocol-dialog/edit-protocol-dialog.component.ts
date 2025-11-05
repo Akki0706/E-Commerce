@@ -112,8 +112,6 @@ protocolName!: FormGroup<any>;
   }
 
 
-
-
   // Edit states for each question
   editStates = {
     painQuestion1: false,

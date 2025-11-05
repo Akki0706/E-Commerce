@@ -15,6 +15,7 @@
     height: 200px; /* Fix image height for consistency */
     object-fit: cover; /* Ensures image scales properly */
     border-radius: 8px 8px 0 0;
+    object-fit: contain;
   " />
   <div style="padding: 16px;">
     <h2 [routerLink]="'/product/'+product._id" style="
@@ -47,14 +48,19 @@
     <div style="display: flex; gap: 30px; align-items: center; justify-content: center;">
       <!-- Wishlist button -->
       <button mat-fab (click)="addToWishList(product)">
-        <mat-icon *ngIf="isInWishList(product)">favorite</mat-icon>
-        <mat-icon *ngIf="!isInWishList(product)">favorite_border</mat-icon>
+        <mat-icon matTooltip="Remove Wishlist"
+  matTooltipPosition="above" *ngIf="isInWishList(product)">favorite</mat-icon>
+        <mat-icon matTooltip="Add Wishlist"
+  matTooltipPosition="above" *ngIf="!isInWishList(product)">favorite_border</mat-icon>
       </button>
 
       <!-- Cart button -->
       <button mat-fab (click)="addToCart(product)">
-        <mat-icon *ngIf="isProductInCart(product._id!)">remove_shopping_cart</mat-icon>
-        <mat-icon *ngIf="!isProductInCart(product._id!)">add_shopping_cart</mat-icon>
+        <mat-icon matTooltip="Remove item"
+  matTooltipPosition="above" *ngIf="isProductInCart(product._id!)">remove_shopping_cart</mat-icon>
+        <mat-icon
+        matTooltip="Add item"
+  matTooltipPosition="above" *ngIf="!isProductInCart(product._id!)">add_shopping_cart</mat-icon>
       </button>
     </div>
   </div>

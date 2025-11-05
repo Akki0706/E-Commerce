@@ -34,46 +34,63 @@
 
 
 
-
-<footer class="bg-gray-100 py-8 border-t border-gray-300 mt-8">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap justify-around text-center sm:text-left">
-      
-      <!-- Company Section -->
-      <div class="w-full sm:w-1/3 md:w-1/4 mb-6 sm:mb-0">
-        <h4 class="text-lg font-semibold text-gray-800 mb-4">Company</h4>
-        <ul class="space-y-2">
-          <li><a href="/about" class="text-blue-500 hover:text-blue-700">About Us</a></li>
-          <li><a href="/contact" class="text-blue-500 hover:text-blue-700">Contact</a></li>
-          <li><a href="/careers" class="text-blue-500 hover:text-blue-700">Careers</a></li>
-        </ul>
-      </div>
-
-      <!-- Support Section -->
-      <div class="w-full sm:w-1/3 md:w-1/4 mb-6 sm:mb-0">
-        <h4 class="text-lg font-semibold text-gray-800 mb-4">Support</h4>
-        <ul class="space-y-2">
-          <li><a href="/help" class="text-blue-500 hover:text-blue-700">Help Center</a></li>
-          <li><a href="/returns" class="text-blue-500 hover:text-blue-700">Returns</a></li>
-          <li><a href="/faq" class="text-blue-500 hover:text-blue-700">FAQs</a></li>
-        </ul>
-      </div>
-
-      <!-- Social Media Section -->
-      <div class="w-full sm:w-1/3 md:w-1/4">
-        <h4 class="text-lg font-semibold text-gray-800 mb-4">Social Media</h4>
-        <ul class="space-y-2">
-          <li><a href="https://www.facebook.com" target="_blank" class="text-blue-500 hover:text-blue-700">Facebook</a></li>
-          <li><a href="https://www.twitter.com" target="_blank" class="text-blue-500 hover:text-blue-700">Twitter</a></li>
-          <li><a href="https://www.instagram.com" target="_blank" class="text-blue-500 hover:text-blue-700">Instagram</a></li>
-        </ul>
-      </div>
-
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/careers">Careers</a></li>
+      </ul>
     </div>
 
-    <!-- Footer Bottom -->
-    <div class="mt-8 border-t pt-4 text-gray-600 text-sm text-center">
-      <p>&copy; 2024 E-Commerce Website. All Rights Reserved.</p>
+    <div class="footer-section">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="/help">Help Center</a></li>
+        <li><a href="/returns">Returns</a></li>
+        <li><a href="/faq">FAQs</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Social Media</h4>
+      <ul>
+        <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+        <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2024 E-Commerce Website. All Rights Reserved.</p>
+  </div>
+
+  <!-- 💬 Chatbot Icon -->
+  <div class="chatbot-icon"
+  matTooltip="Chat with our AI assistant"
+  matTooltipPosition="above"
+  *ngIf="!isChatOpen" (click)="toggleChatbot()">
+    💬
+  </div>
+
+  <!-- 🧠 Chatbot Window -->
+  <div class="chatbot-window" *ngIf="isChatOpen" [class.active]="isChatOpen">
+    <div class="chat-header">
+      <h4>AI Chatbot</h4>
+      <span class="close" (click)="toggleChatbot()">✖</span>
+    </div>
+    <div class="chat-body" #chatBody>
+      <div *ngFor="let msg of messages" [class.user]="msg.sender === 'user'" [class.bot]="msg.sender === 'bot'">
+        {{ msg.text }}
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Type your message..." [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Send</button>
     </div>
   </div>
 </footer>
+
