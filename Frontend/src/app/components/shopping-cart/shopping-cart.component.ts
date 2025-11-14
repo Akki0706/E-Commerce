@@ -123,7 +123,8 @@ import { Router } from '@angular/router';
 
 // Import SweetAlert2
 import Swal from 'sweetalert2';
-
+import { PaymentService } from '../../services/payment.service';
+import { environment } from '../../../environments/environment';
 declare var Razorpay: any;
 
 @Component({
@@ -139,6 +140,8 @@ export class ShoppingCartComponent {
   paymentType = 'cash';
   orderService = inject(OrderService);
   formbuilder = inject(FormBuilder);
+  private paymentService = inject(PaymentService);
+
   orderStep: number = 0;
 
   // Address form validation
@@ -202,39 +205,124 @@ export class ShoppingCartComponent {
   }
 
   // Complete the order and call backend service to create the order
-  completeOrder() {
-    let order: Order = {
-      items: this.cartItems,
-      paymentType: this.paymentType,
-      address: this.addressForm.value,
-      date: new Date(),
-      totalAmount: this.totalAmount,
-    };
+completeOrder() {
+  if (this.paymentType === 'cash') {
+    // ✅ Existing COD flow stays as-is
+    this.placeOrder('Cash on Delivery');
+  } 
+  else if (this.paymentType === 'card') {
+    // 💳 Razorpay Flow
+    const amountInPaise = this.totalAmount * 100;
 
-    // Log the order to ensure it's properly formatted
-    console.log("Creating order:", order);
+    this.paymentService.createOrder(amountInPaise).subscribe({
+      next: (res: any) => {
+        if (!res.success) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Payment Error',
+            text: 'Unable to create Razorpay order.'
+          });
+          return;
+        }
 
-    this.orderService.addOrder(order).subscribe(
-      (result) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Order Placed',
-          text: 'Your order has been completed successfully!',
-          confirmButtonText: 'OK'
+        const orderData = res.order;
+
+        const options = {
+          key: environment.razorpayKey, // ⚠️ Replace with your Test Key
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: 'My E-Commerce Store',
+          description: 'Order Payment',
+          order_id: orderData.id,
+          prefill: {
+            name: 'John Doe',
+            email: 'john@example.com',
+            contact: '9999999999'
+          },
+          theme: {
+            color: '#0A8AFF'
+          },
+          handler: (response: any) => {
+            // ✅ Verify payment on backend
+            this.paymentService.verifyPayment(response).subscribe({
+              next: (verifyRes: any) => {
+                if (verifyRes.success) {
+                  // ✅ After verification success, create order in your DB
+                  this.placeOrder('Online Payment');
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Verification Failed',
+                    text: 'Please try again.'
+                  });
+                }
+              },
+              error: (err) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Verification Error',
+                  text: 'Server verification failed. Try again.'
+                });
+              }
+            });
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+
+        rzp.on('payment.failed', (response: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Payment Failed',
+            text: response.error.description || 'Transaction could not be completed.'
+          });
         });
-        this.cartService.init();
-        this.orderStep = 0;
-        this.router.navigateByUrl('/orders');
       },
-      (error) => {
-        console.error("Error completing order", error);
+      error: (err) => {
         Swal.fire({
           icon: 'error',
-          title: 'Order Failed',
-          text: 'There was an error processing your order. Please try again.',
-          confirmButtonText: 'Retry'
+          title: 'Server Error',
+          text: 'Unable to start payment process.'
         });
       }
-    );
+    });
   }
+}
+
+
+verifyPayment(){
+
+}
+ placeOrder(paymentMethod: string) {
+  let order: Order = {
+    items: this.cartItems,
+    paymentType: paymentMethod,
+    address: this.addressForm.value,
+    date: new Date(),
+    totalAmount: this.totalAmount,
+  };
+
+  this.orderService.addOrder(order).subscribe({
+    next: (result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Order Placed Successfully',
+        text: 'Your order has been completed!',
+      });
+      this.cartService.init();
+      this.orderStep = 0;
+      this.router.navigateByUrl('/orders');
+    },
+    error: (error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Order Failed',
+        text: 'There was an issue completing your order.',
+      });
+    }
+  });
+}
+
+
 }

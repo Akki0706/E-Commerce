@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 
+
 const app = express();
 const port = 2000;
 const cors = require("cors");
@@ -26,6 +27,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+
+
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const categoryRoutes = require("./routes/category");
@@ -36,6 +39,7 @@ const customerRoutes = require("./routes/customer");
 const authRoutes = require("./routes/auth");
 const reviewsRouter = require('./routes/review');
 const { verifyToken, isAdmin } = require('./middleware/auth-middleware');
+const paymentRoutes = require('./routes/payment');
 
 
 
@@ -86,6 +90,12 @@ app.get("/", (req, res) => {
     res.send("Server running")
 });
 
+app.get('/', (req, res) => {
+  res.send('Razorpay payment API running...');
+});
+
+
+
 async function connectDb(){
     await mongoose.connect("mongodb://localhost:27017", {
         dbName: "e-comm-store-db",
@@ -104,6 +114,7 @@ app.use("/product", verifyToken, isAdmin, productRoutes);
 app.use("/customer", customerRoutes);
 app.use("/auth", authRoutes);
 app.use('/api/review', reviewsRouter);
+app.use('/api', paymentRoutes);
 
 app.listen(port, () => {
     console.log("Server is running on port", port)

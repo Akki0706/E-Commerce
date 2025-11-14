@@ -509,3 +509,54 @@ header {
     min-width: 200px;
   }
 }
+
+
+
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.search-bar input[type="text"] {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: #000;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #999;
+}
+
+.search-bar button {
+  padding: 12px 28px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar button:hover {
+  background: #333;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 90%;
+  }
+}

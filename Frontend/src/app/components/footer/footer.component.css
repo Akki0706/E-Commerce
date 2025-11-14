@@ -84,6 +84,7 @@
 
   &.active {
     display: flex;
+    height: 100%;
   }
 
   .chat-header {
@@ -116,6 +117,9 @@
       text-align: right;
       color: #333;
       margin-bottom: 10px;
+          background-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
     }
 
     .bot {

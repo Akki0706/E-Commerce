@@ -1,69 +1,61 @@
-<div class="mt-12">
-  <h2 class="text-3xl font-bold mb-6">Product Reviews</h2>
+<div class="reviews-section">
+  <h2 class="reviews-title">Product Reviews</h2>
 
-  <div *ngIf="reviews.length > 0" class="space-y-6">
-    <div
-      *ngFor="let review of reviews"
-      class="border p-6 rounded-lg shadow-sm bg-white"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-semibold">{{ review.reviewer }}</h3>
-        <div class="text-yellow-400">
+  <div *ngIf="reviews.length > 0" class="reviews-list">
+    <div *ngFor="let review of reviews" class="review-card">
+      <div class="review-header">
+        <h3 class="reviewer-name">{{ review.reviewer }}</h3>
+        <div class="star-rating">
           <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
-            <i [class]="i < review.rating ? 'fas fa-star' : 'far fa-star'"></i>
+            <i [ngClass]="i < review.rating ? 'fas fa-star star-filled' : 'far fa-star star-empty'"></i>
           </ng-container>
         </div>
       </div>
-      <p class="text-gray-600">{{ review.comment }}</p>
-      <p class="text-sm text-gray-400">
-        {{ review.createdAt | date : "medium" }}
-      </p>
+      <p class="review-comment">{{ review.comment }}</p>
+      <p class="review-date">{{ review.createdAt | date : "medium" }}</p>
     </div>
   </div>
 
-  <div class="mt-10">
-    <h3 class="text-2xl font-semibold mb-4">Write a Review</h3>
-    <form
-      [formGroup]="reviewForm"
-      (ngSubmit)="submitReview()"
-      class="space-y-4"
-    >
-      <div>
+  <div *ngIf="reviews.length === 0" class="no-reviews">
+    No reviews yet. Be the first to review!
+  </div>
+
+  <div class="review-form-section">
+    <h3 class="form-title">Write a Review</h3>
+    <form [formGroup]="reviewForm" (ngSubmit)="submitReview()" class="review-form">
+      <div class="form-group">
         <input
           formControlName="reviewer"
           type="text"
           placeholder="Your name"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          class="form-input"
+          [ngClass]="{'invalid': reviewForm.get('reviewer')?.invalid && reviewForm.get('reviewer')?.touched}"
         />
       </div>
 
-      <div>
-        <select
-          formControlName="rating"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-        >
+      <div class="form-group">
+        <select formControlName="rating" class="form-select">
+          <option value="">Select Rating</option>
           <option *ngFor="let star of [1, 2, 3, 4, 5]" [value]="star">
             {{ star }} Star(s)
           </option>
         </select>
       </div>
 
-      <div>
+      <div class="form-group">
         <textarea
           formControlName="comment"
-          placeholder="Your review"
+          placeholder="Share your experience with this product..."
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+          class="form-textarea"
+          [ngClass]="{'invalid': reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched}"
         ></textarea>
       </div>
 
-      <div>
-        <button
-          type="submit"
-          class="w-full bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
-        >
-          Submit
+      <div class="form-group">
+        <button type="submit" class="submit-button" [disabled]="reviewForm.invalid">
+          Submit Review
         </button>
       </div>
     </form>
